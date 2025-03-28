@@ -1,0 +1,42 @@
+name: deploy - production
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - released
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-images.yml
+    secrets: inherit
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://farmhand.sneakycrow.dev
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_REGISTRY_KEY }}
+
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save ${{ vars.CLUSTER_NAME }}
+
+      - name: Update kustomization
+        run: |
+          cd k8s/overlays/production
+          kustomize edit set image api=${{ secrets.DO_REGISTRY }}/${{ vars.API_IMAGE }}:${{ needs.build.outputs.image_tag }}
+          kustomize edit set image ui=${{ secrets.DO_REGISTRY }}/${{ vars.WEB_IMAGE }}:${{ needs.build.outputs.image_tag }}
+
+      - name: Deploy to production
+        run: |
+          kubectl apply -k k8s/overlays/production
+          kubectl rollout status deployment/skeever-api-production -n production --timeout=2m
+          kubectl rollout status deployment/skeever-web-production -n production --timeout=2m
