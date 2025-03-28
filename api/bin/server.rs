@@ -1,11 +1,9 @@
 use axum::{
-    Json, Router,
+    Router,
     extract::{State, ws},
-    http::StatusCode,
-    routing::{get, post},
+    routing::get,
 };
 use futures::{SinkExt, StreamExt};
-use serde::{Deserialize, Serialize};
 use skeever::prelude::*;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -41,8 +39,6 @@ async fn main() -> Result<(), SkeeverError> {
         .route("/", get(index_handler))
         .route("/health", get(health_handler))
         .route("/ws", get(ws_handler))
-        .route("/events", post(save_event))
-        .route("/events", get(get_events))
         .with_state(app_state);
 
     tracing::info!("Starting server on http://localhost:3000");
@@ -133,20 +129,4 @@ async fn handle_socket(socket: ws::WebSocket, state: AppState) {
     }
 
     tracing::info!("Websocket connection closed");
-}
-
-#[derive(Deserialize, Serialize)]
-struct Event;
-
-/// Save Event
-#[axum::debug_handler]
-async fn save_event(Json(_payload): Json<Event>) -> Result<StatusCode, SkeeverError> {
-    // TODO: Save events from various sources, like an oblivion mod
-    Ok(StatusCode::OK)
-}
-
-/// Get Events
-async fn get_events() -> Result<Json<Vec<Event>>, SkeeverError> {
-    // TODO: Get events from the oblivion event stream
-    Ok(Json(vec![]))
 }
