@@ -128,5 +128,5 @@ async fn handle_socket(socket: ws::WebSocket, state: AppState) {
         _ = sender_task => {},
     }
 
-    tracing::info!("Websocket connection closed");
+    tracing::debug!("Websocket connection closed");
 }
