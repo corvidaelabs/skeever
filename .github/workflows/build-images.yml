@@ -93,7 +93,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
         env:
-          PUBLIC_API_URL: https://api.skeever.net
+          PUBLIC_API_URL: wss://api.skeever.net/ws
 
       - name: Image digest
         run: echo "Web image digest $(doctl registry repository digest-list ${{ vars.WEB_IMAGE }} --format Tag,Digest --no-header | grep ${{ needs.setup.outputs.version }})"
