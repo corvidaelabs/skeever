@@ -1,5 +1,8 @@
 # skeever
 
+[![build api](https://github.com/corvidaelabs/skeever/actions/workflows/build-api.yml/badge.svg)](https://github.com/corvidaelabs/skeever/actions/workflows/build-api.yml)
+[![build web](https://github.com/corvidaelabs/skeever/actions/workflows/build-web.yml/badge.svg)](https://github.com/corvidaelabs/skeever/actions/workflows/build-web.yml)
+
 Skeever is an in-world Oblivion social network
 
 ## Development
