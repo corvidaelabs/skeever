@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: skeever-web-config
 data:
-  PUBLIC_API_URL: ws://api.skeever.net/ws
+  PUBLIC_API_URL: wss://api.skeever.net/ws
