@@ -6,10 +6,12 @@ nameSuffix: -production
 
 resources:
   - ../../base/web
+  - ../../base/api
   - ingress.yaml
 
 images:
   - name: web
+  - name: api
 
 labels:
   - includeSelectors: true

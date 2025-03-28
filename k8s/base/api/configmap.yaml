@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skeever-api-config
+data:
+  RUST_LOG: 'skeever=debug,api=debug,tower_http=debug,axum::rejection=trace,serenity=debug'
+  EVENT_STREAM_NAME: 'ODDLAWS_EVENTS'
+  EVENT_STREAM_PREFIX: 'oddlaws.events'

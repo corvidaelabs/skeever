@@ -41,9 +41,9 @@ async fn main() -> Result<(), SkeeverError> {
         .route("/ws", get(ws_handler))
         .with_state(app_state);
 
-    tracing::info!("Starting server on http://localhost:3000");
-    // run our app with hyper, listening globally on port 3000
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    tracing::info!("Starting server on http://localhost:8000");
+    // run our app with hyper, listening globally on port 8000
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
     axum::serve(listener, router).await.unwrap();
 
     Ok(())
