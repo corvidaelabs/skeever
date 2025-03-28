@@ -1,7 +1,6 @@
 name: build & push images
 
 on:
-  push:
   workflow_dispatch:
   workflow_call:
     outputs:
