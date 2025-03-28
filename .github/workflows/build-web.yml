@@ -44,4 +44,4 @@ jobs:
       - name: Build
         run: yarn build
         env:
-          VITE_API_URL: https://api.skeever.net
+          PUBLIC_API_URL: https://api.skeever.net

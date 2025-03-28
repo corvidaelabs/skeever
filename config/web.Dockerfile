@@ -51,7 +51,7 @@ COPY --from=deps /app/node_modules /app/node_modules
 # Copy built application
 COPY --from=build /app /app
 
-ENV VITE_API_URL=https://api.skeever.net
+ENV PUBLIC_API_URL=https://api.skeever.net
 
 EXPOSE 3000
 CMD [ "yarn", "start" ]
