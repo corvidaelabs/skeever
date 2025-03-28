@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { VITE_API_URL } from '$env/static/private';
+	import { VITE_API_URL } from '$env/static/public';
 	import { Avatar } from '@skeletonlabs/skeleton-svelte';
 	import { onMount, onDestroy } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
