@@ -91,6 +91,8 @@ jobs:
             ${{ steps.image_tag.outputs.value }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+        env:
+          VITE_API_URL: https://api.skeever.net
 
       - name: Image digest
         run: echo "Web image digest $(doctl registry repository digest-list ${{ vars.WEB_IMAGE }} --format Tag,Digest --no-header | grep ${{ needs.setup.outputs.version }})"
