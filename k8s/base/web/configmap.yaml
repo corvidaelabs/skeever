@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: skeever-config
 data:
-  SKEEVER_STREAM_URL: https://api.skeever.net/ws
+  VITE_API_URL: https://api.skeever.net/ws
