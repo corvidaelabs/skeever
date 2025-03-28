@@ -17,7 +17,7 @@
 
 	onMount(() => {
 		// Connect to the WebSocket server
-		socket = new WebSocket(`${PUBLIC_API_URL}/ws`);
+		socket = new WebSocket(PUBLIC_API_URL);
 
 		socket.onopen = () => {
 			console.log('Connected to WebSocket server');
