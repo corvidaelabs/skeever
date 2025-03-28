@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skeever-web
+spec:
+  selector:
+    matchLabels:
+      app: skeever-web
+  template:
+    metadata:
+      labels:
+        app: skeever-web
+    spec:
+      containers:
+        - name: skeever-web
+          image: web
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: skeever-web-config
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '256Mi'
+            limits:
+              cpu: '500m'
+              memory: '512Mi'

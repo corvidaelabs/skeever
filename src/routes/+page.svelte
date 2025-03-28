@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_API_URL } from '$env/static/public';
 	import { Avatar } from '@skeletonlabs/skeleton-svelte';
 	import { onMount, onDestroy } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -16,7 +17,7 @@
 
 	onMount(() => {
 		// Connect to the WebSocket server
-		socket = new WebSocket('ws://localhost:3000/ws');
+		socket = new WebSocket(PUBLIC_API_URL);
 
 		socket.onopen = () => {
 			console.log('Connected to WebSocket server');

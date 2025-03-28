@@ -1,0 +1,98 @@
+name: build & push images
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      image_tag:
+        description: 'The tag for all images in this run'
+        value: ${{ jobs.setup.outputs.version }}
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.VERSION }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get commit hash
+        id: version
+        run: echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+  build-api:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set image tag
+        id: image_tag
+        run: echo "value=${{ secrets.DO_REGISTRY }}/${{ vars.API_IMAGE }}:${{ needs.setup.outputs.version }}" >> $GITHUB_OUTPUT
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_REGISTRY_KEY }}
+
+      - name: Log in to DO Container Registry
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: config/api.Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ steps.image_tag.outputs.value }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Image digest
+        run: echo "API image digest $(doctl registry repository digest-list ${{ vars.API_IMAGE }} --format Tag,Digest --no-header | grep ${{ needs.setup.outputs.version }})"
+
+  build-web:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set image tag
+        id: image_tag
+        run: echo "value=${{ secrets.DO_REGISTRY }}/${{ vars.WEB_IMAGE }}:${{ needs.setup.outputs.version }}" >> $GITHUB_OUTPUT
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_REGISTRY_KEY }}
+
+      - name: Log in to DO Container Registry
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Web image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: config/web.Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ steps.image_tag.outputs.value }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+        env:
+          PUBLIC_API_URL: wss://api.skeever.net/ws
+
+      - name: Image digest
+        run: echo "Web image digest $(doctl registry repository digest-list ${{ vars.WEB_IMAGE }} --format Tag,Digest --no-header | grep ${{ needs.setup.outputs.version }})"

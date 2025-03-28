@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skeever-api
+spec:
+  selector:
+    matchLabels:
+      app: skeever-api
+  template:
+    metadata:
+      labels:
+        app: skeever-api
+    spec:
+      containers:
+        - name: skeever-api
+          image: api
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: skeever-api-config
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '256Mi'
+            limits:
+              cpu: '500m'
+              memory: '512Mi'
