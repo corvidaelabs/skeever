@@ -33,7 +33,7 @@ COPY --link vite.config.ts /app/
 COPY --link tsconfig.json /app/
 COPY --link yarn.lock /app/
 
-ENV PUBLIC_API_URL=https://api.skeever.net
+ENV PUBLIC_API_URL=wss://api.skeever.net/ws
 
 # Build application
 RUN yarn build
@@ -52,7 +52,7 @@ COPY --from=deps /app/node_modules /app/node_modules
 # Copy built application
 COPY --from=build /app /app
 
-ENV PUBLIC_API_URL=https://api.skeever.net
+ENV PUBLIC_API_URL=wss://api.skeever.net/ws
 
 EXPOSE 3000
 CMD [ "yarn", "start" ]
