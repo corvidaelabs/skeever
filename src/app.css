@@ -1,3 +1,14 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton/optional/presets';
+
+@import './lib/themes/skeever.css';
+
+@source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
+
+@theme {
+	--font-sans: 'Outfit', 'sans-serif';
+}
