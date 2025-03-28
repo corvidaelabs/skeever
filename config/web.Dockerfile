@@ -33,6 +33,7 @@ COPY --link vite.config.ts /app/
 COPY --link tsconfig.json /app/
 COPY --link yarn.lock /app/
 
+ENV PUBLIC_API_URL=https://api.skeever.net
 
 # Build application
 RUN yarn build
