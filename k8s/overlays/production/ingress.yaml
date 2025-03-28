@@ -17,7 +17,7 @@ spec:
   tls:
     - hosts:
         - skeever.net
-      secretName: skeever-web-staging-tls
+      secretName: skeever-web-production-tls
   rules:
     - host: skeever.net
       http:
@@ -26,7 +26,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: skeever-web-staging
+                name: skeever-web-production
                 port:
                   number: 80
 ---
@@ -49,7 +49,7 @@ spec:
   tls:
     - hosts:
         - api.skeever.net
-      secretName: skeever-api-staging-tls
+      secretName: skeever-api-production-tls
   rules:
     - host: api.skeever.net
       http:
@@ -58,7 +58,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: skeever-api-staging
+                name: skeever-api-production
                 port:
                   number: 80
 ---
