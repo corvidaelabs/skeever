@@ -34,7 +34,7 @@ jobs:
         run: |
           cd k8s/overlays/production
           kustomize edit set image api=${{ secrets.DO_REGISTRY }}/${{ vars.API_IMAGE }}:${{ needs.build.outputs.image_tag }}
-          kustomize edit set image ui=${{ secrets.DO_REGISTRY }}/${{ vars.WEB_IMAGE }}:${{ needs.build.outputs.image_tag }}
+          kustomize edit set image web=${{ secrets.DO_REGISTRY }}/${{ vars.WEB_IMAGE }}:${{ needs.build.outputs.image_tag }}
 
       - name: Deploy to production
         run: |
